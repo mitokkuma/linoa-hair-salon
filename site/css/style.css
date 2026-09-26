@@ -230,18 +230,19 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .drawer { display: none; }
 
 /* ---------- ② Hero ---------- */
+/* PC・タブレットは横長写真（人物が右側）、SPは縦長写真を <picture> で出し分け */
 .hero { position: relative; min-height: 690px; overflow: hidden; }
 .hero-image {
   position: absolute;
   inset: 0;
   height: 100%;
   object-fit: cover;
-  object-position: 58% 39%;
+  object-position: 62% 22%;
 }
 .hero::after {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(249, 246, 241, .94) 0%, rgba(249, 246, 241, .72) 38%, rgba(249, 246, 241, .05) 70%);
+  background: linear-gradient(90deg, rgba(249, 246, 241, .82) 0%, rgba(249, 246, 241, .5) 34%, rgba(249, 246, 241, 0) 58%);
   content: "";
 }
 .hero-inner {
@@ -520,6 +521,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .drawer-footer { padding: 16px 32px 20px; }
   .drawer-footer .btn { width: 100%; }
   .style-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .hero-image { object-position: 30% 22%; }
+  .hero-copy { max-width: 54%; }
+  .hero h1 { font-size: clamp(2.2rem, 4.8vw, 2.8rem); }
+  .hero-cta { flex-direction: column; align-items: flex-start; gap: 14px; }
 }
 
 /* ==========================================================================
@@ -544,6 +550,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
   .hero,
   .hero-inner { min-height: 660px; }
+  .hero-copy { max-width: none; }
   .hero-image { object-position: 62% 30%; }
   .hero::after {
     background: linear-gradient(0deg, rgba(249, 246, 241, .98) 0%, rgba(249, 246, 241, .84) 46%, rgba(249, 246, 241, .08) 78%);
@@ -552,7 +559,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .hero h1 { font-size: clamp(2.1rem, 10vw, 3.4rem); }
   .hero-lead { margin: 16px 0; font-size: .9rem; line-height: 1.9; }
   .chips { margin-bottom: 22px; }
-  .hero-cta { flex-direction: column; align-items: stretch; gap: 14px; text-align: center; }
+  .hero-cta { align-items: stretch; text-align: center; }
   .hero-cta .btn { width: 100%; }
 
   .worry { flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px; }

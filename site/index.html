@@ -17,7 +17,8 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="images/hero-salon.jpg" as="image" fetchpriority="high">
+  <link rel="preload" href="images/hero-salon-wide.jpg" as="image" media="(min-width: 761px)" fetchpriority="high">
+  <link rel="preload" href="images/hero-salon.jpg" as="image" media="(max-width: 760px)" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/main.js" defer></script>
 </head>
@@ -62,7 +63,10 @@
   <main id="main">
     <!-- ② ファーストビュー -->
     <section class="hero" aria-labelledby="hero-title">
-      <img class="hero-image" src="images/hero-salon.jpg" alt="艶のあるレイヤーヘアとアッシュベージュカラーの女性" width="1024" height="1536" fetchpriority="high">
+      <picture>
+        <source media="(max-width: 760px)" srcset="images/hero-salon.jpg" width="1024" height="1536">
+        <img class="hero-image" src="images/hero-salon-wide.jpg" alt="艶のあるレイヤーヘアとアッシュベージュカラーの女性" width="1536" height="1024" fetchpriority="high">
+      </picture>
       <div class="wrap hero-inner">
         <div class="hero-copy">
           <p class="en">Find your own beauty</p>
