@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# ローカル設定（プレビュー用）
+.claude/
+
+# 画像の原本（大きいPNG）。サイトでは site/images の圧縮JPGを使用
+images/*.png

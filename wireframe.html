@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="美容院トップページの構成を確認するためのワイヤーフレームです。">
+    <title>美容院トップページ｜ワイヤーフレーム</title>
+    <style>
+      :root {
+        --white: #fff;
+        --gray-050: #fafafa;
+        --gray-100: #f2f2f2;
+        --gray-300: #c9c9c9;
+        --gray-500: #777;
+        --gray-700: #444;
+        --black: #111;
+        --page-width: 1120px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--black);
+        background: var(--white);
+        font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+        line-height: 1.7;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--gray-500);
+        outline-offset: 3px;
+      }
+
+      .page {
+        width: min(var(--page-width), calc(100% - 40px));
+        margin: 24px auto 56px;
+      }
+
+      .wireframe-note {
+        margin: 0 0 16px;
+        padding: 10px 14px;
+        border: 1px dashed var(--gray-500);
+        color: var(--gray-700);
+        background: var(--gray-050);
+        font-size: 0.85rem;
+      }
+
+      .section-box {
+        margin-top: 20px;
+        padding: clamp(24px, 4vw, 52px);
+        border: 2px solid var(--gray-500);
+        background: var(--white);
+      }
+
+      .section-label {
+        display: inline-block;
+        margin: 0 0 24px;
+        padding: 4px 10px;
+        border: 1px solid var(--gray-500);
+        color: var(--gray-700);
+        background: var(--gray-100);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.3;
+      }
+
+      h2 {
+        margin-bottom: 12px;
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+        line-height: 1.4;
+      }
+
+      h3 {
+        margin-bottom: 10px;
+        font-size: 1.15rem;
+      }
+
+      .section-intro {
+        max-width: 700px;
+        margin-bottom: 28px;
+        color: var(--gray-700);
+      }
+
+      .memo {
+        margin-bottom: 0;
+        color: var(--gray-700);
+        font-size: 0.9rem;
+      }
+
+      .placeholder {
+        display: grid;
+        min-height: 180px;
+        padding: 18px;
+        place-items: center;
+        border: 2px dashed var(--gray-300);
+        color: var(--gray-500);
+        background: var(--gray-050);
+        text-align: center;
+      }
+
+      .button-placeholder {
+        display: inline-flex;
+        min-height: 48px;
+        padding: 10px 24px;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--gray-700);
+        background: var(--white);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .site-header {
+        display: flex;
+        padding: 20px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border: 2px solid var(--gray-500);
+      }
+
+      .logo-placeholder {
+        min-width: 150px;
+        padding: 12px 16px;
+        border: 2px dashed var(--gray-300);
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .header-nav {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 20px;
+      }
+
+      .header-nav a:not(.button-placeholder) {
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+
+      .hero-grid,
+      .menu-grid,
+      .staff-grid,
+      .access-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: center;
+        gap: clamp(24px, 5vw, 64px);
+      }
+
+      .hero-grid .placeholder {
+        min-height: 420px;
+      }
+
+      .hero-copy .button-placeholder,
+      .booking-box .button-placeholder {
+        margin-top: 8px;
+      }
+
+      .feature-grid,
+      .style-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        padding: 20px;
+        border: 1px solid var(--gray-500);
+      }
+
+      .card-number {
+        margin-bottom: 18px;
+        color: var(--gray-500);
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .style-card .placeholder {
+        min-height: 260px;
+        margin-bottom: 16px;
+      }
+
+      .price-box {
+        padding: 28px;
+        border: 1px solid var(--gray-500);
+      }
+
+      .price {
+        margin-bottom: 12px;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .staff-grid .placeholder,
+      .access-grid .placeholder {
+        min-height: 300px;
+      }
+
+      .detail-list {
+        margin: 20px 0 0;
+      }
+
+      .detail-list div {
+        display: grid;
+        padding: 12px 0;
+        grid-template-columns: 7em 1fr;
+        border-bottom: 1px solid var(--gray-300);
+        gap: 16px;
+      }
+
+      .detail-list dt {
+        font-weight: 700;
+      }
+
+      .detail-list dd {
+        margin: 0;
+        color: var(--gray-700);
+      }
+
+      .booking-box {
+        max-width: 720px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .site-footer {
+        display: grid;
+        margin-top: 20px;
+        padding: 28px;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 28px;
+        border: 2px solid var(--gray-500);
+      }
+
+      .site-footer p {
+        margin-bottom: 0;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 18px;
+      }
+
+      @media (max-width: 760px) {
+        .page {
+          width: min(100% - 24px, var(--page-width));
+          margin-top: 12px;
+        }
+
+        .site-header {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .header-nav {
+          align-items: stretch;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .header-nav a {
+          padding: 8px 0;
+        }
+
+        .header-nav .button-placeholder {
+          margin-top: 4px;
+        }
+
+        .hero-grid,
+        .menu-grid,
+        .staff-grid,
+        .access-grid,
+        .feature-grid,
+        .style-grid,
+        .site-footer {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-copy {
+          order: 1;
+        }
+
+        .hero-grid .placeholder {
+          min-height: 280px;
+          order: 0;
+        }
+
+        .section-box {
+          margin-top: 12px;
+          padding: 22px 16px;
+        }
+
+        .style-card .placeholder,
+        .staff-grid .placeholder,
+        .access-grid .placeholder {
+          min-height: 220px;
+        }
+
+        .detail-list div {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+
+        .button-placeholder {
+          width: 100%;
+        }
+
+        .footer-links {
+          flex-direction: column;
+          gap: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <p class="wireframe-note">美容院トップページ ワイヤーフレーム｜白・黒・グレーのみで、情報の配置と順番を確認するためのページ</p>
+
+      <header class="site-header" aria-label="ヘッダー">
+        <div class="logo-placeholder">ここにロゴ</div>
+        <nav class="header-nav" aria-label="主要メニュー">
+          <a href="#features">サロンの特徴</a>
+          <a href="#styles">スタイル</a>
+          <a href="#menu">メニュー</a>
+          <a href="#access">アクセス</a>
+          <a class="button-placeholder" href="#booking">予約する</a>
+        </nav>
+      </header>
+
+      <section class="section-box" aria-labelledby="hero-title">
+        <span class="section-label">01 ファーストビュー</span>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <h1 id="hero-title">ここにキャッチコピー</h1>
+            <p>ここに「似合う髪型とカラーをご提案します」など、カットとカラーの強みが伝わる短い説明文。</p>
+            <a class="button-placeholder" href="#booking">外部予約サイトで予約する</a>
+            <p class="memo">メモ：最初の画面だけで、誰向けの美容院か・何が得意か・どこから予約するかが分かるようにする。</p>
+          </div>
+          <div class="placeholder">ここに代表的なスタイル写真<br>カットとカラーの仕上がりが伝わる1枚</div>
+        </div>
+      </section>
+
+      <section class="section-box" id="features" aria-labelledby="features-title">
+        <span class="section-label">02 サロンの特徴</span>
+        <h2 id="features-title">ここにサロンの強みを表す見出し</h2>
+        <p class="section-intro">ここに、お客様の悩みに寄り添い、似合うスタイルを一緒に見つけるサロンであることを説明。</p>
+        <div class="feature-grid">
+          <article class="card">
+            <p class="card-number">特徴 1</p>
+            <h3>似合わせ提案</h3>
+            <p class="memo">ここに、顔立ち・髪質・普段の過ごし方に合わせて提案することを記載。</p>
+          </article>
+          <article class="card">
+            <p class="card-number">特徴 2</p>
+            <h3>カット技術</h3>
+            <p class="memo">ここに、扱いやすさや再現性を意識したカットについて記載。</p>
+          </article>
+          <article class="card">
+            <p class="card-number">特徴 3</p>
+            <h3>カラー技術</h3>
+            <p class="memo">ここに、肌や雰囲気になじむ色の提案と仕上がりについて記載。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-box" id="styles" aria-labelledby="styles-title">
+        <span class="section-label">03 スタイル実例</span>
+        <h2 id="styles-title">ここにスタイルギャラリーの見出し</h2>
+        <p class="section-intro">ここに、実際のカットとカラーの仕上がりを長さ別に見られることを説明。</p>
+        <div class="style-grid">
+          <article class="card style-card">
+            <div class="placeholder">ここにロングのスタイル写真</div>
+            <h3>ロング</h3>
+            <p class="memo">メモ：カラー名、スタイルの特徴、おすすめの方。</p>
+          </article>
+          <article class="card style-card">
+            <div class="placeholder">ここにセミロングのスタイル写真</div>
+            <h3>セミロング</h3>
+            <p class="memo">メモ：カラー名、スタイルの特徴、おすすめの方。</p>
+          </article>
+          <article class="card style-card">
+            <div class="placeholder">ここにショートのスタイル写真</div>
+            <h3>ショート</h3>
+            <p class="memo">メモ：カラー名、スタイルの特徴、おすすめの方。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-box" id="menu" aria-labelledby="menu-title">
+        <span class="section-label">04 おすすめメニュー</span>
+        <div class="menu-grid">
+          <div>
+            <h2 id="menu-title">カット＋カラーセット</h2>
+            <p>ここに、このメニューで得られる仕上がりや施術の流れを簡潔に記載。</p>
+            <p class="memo">メモ：初めての方にも総額と所要時間が分かるようにする。</p>
+          </div>
+          <div class="price-box">
+            <p class="price">料金：¥00,000（税込）</p>
+            <p>所要時間：約000分</p>
+            <p>内容：カウンセリング／カット／カラー／仕上げ</p>
+            <a class="button-placeholder" href="#booking">このメニューを予約する</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-box" aria-labelledby="staff-title">
+        <span class="section-label">05 スタッフ紹介</span>
+        <div class="staff-grid">
+          <div class="placeholder">ここにスタッフの顔写真<br>親しみやすさが伝わる自然な写真</div>
+          <div>
+            <h2 id="staff-title">ここにスタッフ名</h2>
+            <h3>得意な施術：カット・カラー</h3>
+            <p>ここに経歴、施術で大切にしていること、お客様へのメッセージを記載。</p>
+            <p class="memo">メモ：技術だけでなく、人柄と相談しやすさが伝わる内容にする。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-box" id="access" aria-labelledby="access-title">
+        <span class="section-label">06 店舗情報・アクセス</span>
+        <h2 id="access-title">ここに店舗名とアクセス案内</h2>
+        <div class="access-grid">
+          <div>
+            <dl class="detail-list">
+              <div><dt>住所</dt><dd>ここに店舗住所</dd></div>
+              <div><dt>最寄り駅</dt><dd>ここに駅名・出口・徒歩分数</dd></div>
+              <div><dt>営業時間</dt><dd>ここに営業時間</dd></div>
+              <div><dt>定休日</dt><dd>ここに定休日</dd></div>
+              <div><dt>電話番号</dt><dd>ここに電話番号</dd></div>
+            </dl>
+            <p class="memo">メモ：必要に応じて、建物の目印や駐車場情報も追加。</p>
+          </div>
+          <div class="placeholder">ここに地図<br>Googleマップなどを配置</div>
+        </div>
+      </section>
+
+      <section class="section-box" id="booking" aria-labelledby="booking-title">
+        <span class="section-label">07 最終予約案内</span>
+        <div class="booking-box">
+          <h2 id="booking-title">ここに予約を後押しする見出し</h2>
+          <p>ここに「髪型やカラーが決まっていなくても、相談しながら決められます」など、不安を解消する短いメッセージ。</p>
+          <a class="button-placeholder" href="#">外部予約サイトで予約する</a>
+          <p class="memo">メモ：予約ボタンの近くに受付時間や注意事項があれば記載。</p>
+        </div>
+      </section>
+
+      <footer class="site-footer" aria-label="フッター">
+        <div>
+          <strong>ここにロゴ・店舗名</strong>
+          <p class="memo">ここに住所・営業時間・著作権表示。</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">Instagram</a>
+          <a href="#access">アクセス</a>
+        </div>
+        <a class="button-placeholder" href="#booking">予約する</a>
+      </footer>
+    </main>
+  </body>
+</html>

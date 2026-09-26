@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="plan.md をもとにした美容院トップページのワイヤーフレーム（PC / SP 切替・注釈付き）">
+    <title>美容院トップ ワイヤーフレーム</title>
+    <style>
+      :root {
+        --white: #fff;
+        --g0: #fafafa;
+        --g1: #f0f0f0;
+        --g2: #e2e2e2;
+        --g3: #c4c4c4;
+        --g5: #8a8a8a;
+        --g7: #4a4a4a;
+        --black: #1a1a1a;
+        --anno: #5b5b5b;
+        --bar-h: 52px;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; scroll-padding-top: calc(var(--bar-h) + 72px); }
+      body {
+        margin: 0;
+        color: var(--black);
+        background: var(--g2);
+        font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+        line-height: 1.7;
+      }
+      h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
+      ul, ol { padding: 0; list-style: none; }
+      a { color: inherit; }
+      button { font: inherit; color: inherit; }
+      :focus-visible { outline: 3px solid var(--g5); outline-offset: 3px; }
+
+      /* ===== 確認用ツールバー（サイトの一部ではない） ===== */
+      .toolbar {
+        position: sticky; top: 0; z-index: 50;
+        display: flex; height: var(--bar-h); padding: 0 16px;
+        align-items: center; justify-content: space-between; gap: 12px;
+        color: var(--white); background: #2b2b2b; font-size: .8rem;
+      }
+      .toolbar strong { font-size: .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .toolbar-controls { display: flex; gap: 8px; flex-shrink: 0; }
+      .seg { display: flex; border: 1px solid #666; border-radius: 6px; overflow: hidden; }
+      .seg button {
+        padding: 6px 12px; border: 0; color: #ccc; background: transparent; cursor: pointer; font-size: .75rem;
+      }
+      .seg button[aria-pressed="true"] { color: var(--black); background: var(--white); font-weight: 700; }
+
+      /* ===== ワイヤーフレーム本体 ===== */
+      .frame {
+        container: site / inline-size;
+        width: min(1280px, 100%);
+        margin: 24px auto 64px;
+        background: var(--white);
+        box-shadow: 0 0 0 1px var(--g3);
+        transition: width .25s;
+      }
+      body.is-sp .frame { width: min(390px, 100%); }
+      @media (max-width: 600px) { .frame { margin-top: 0; } }
+
+      .wrap { width: min(1080px, calc(100% - 48px)); margin: 0 auto; }
+
+      /* セクション番号タグ＆注釈 */
+      .tag {
+        display: inline-flex; gap: 6px; margin-bottom: 16px; padding: 2px 10px;
+        border: 1px solid var(--g5); color: var(--g7); background: var(--g1);
+        font-size: .7rem; font-weight: 700; letter-spacing: .06em;
+      }
+      .anno {
+        position: relative; margin-top: 20px; padding: 10px 12px 10px 38px;
+        border: 1px dashed var(--anno); color: var(--anno); background: var(--g0);
+        font-size: .76rem; line-height: 1.6;
+      }
+      .anno::before {
+        content: "注"; position: absolute; top: 9px; left: 10px;
+        display: grid; width: 20px; height: 20px; place-items: center;
+        border-radius: 50%; color: var(--white); background: var(--anno); font-size: .65rem; font-weight: 700;
+      }
+      .anno ul { padding-left: 1em; list-style: disc; }
+      body.hide-anno .anno, body.hide-anno .tag { display: none; }
+
+      /* 写真プレースホルダー（×印） */
+      .ph {
+        position: relative; display: grid; min-height: 120px; padding: 12px; place-items: center;
+        border: 1px solid var(--g3); color: var(--g5); font-size: .75rem; text-align: center;
+        background:
+          linear-gradient(to top right, transparent calc(50% - .5px), var(--g3) 50%, transparent calc(50% + .5px)),
+          linear-gradient(to bottom right, transparent calc(50% - .5px), var(--g3) 50%, transparent calc(50% + .5px)),
+          var(--g1);
+      }
+      .ph span { padding: 2px 8px; background: var(--g1); }
+      .r-34 { aspect-ratio: 3 / 4; }
+      .r-11 { aspect-ratio: 1; }
+      .r-43 { aspect-ratio: 4 / 3; }
+
+      /* ボタン */
+      .btn {
+        display: inline-flex; min-height: 48px; padding: 10px 24px; align-items: center; justify-content: center; gap: 8px;
+        border: 2px solid var(--black); background: var(--white); font-size: .9rem; font-weight: 700; text-decoration: none;
+      }
+      .btn-primary { color: var(--white); background: var(--black); }
+      .btn-lg { min-height: 60px; padding: 14px 40px; font-size: 1rem; }
+      .btn small { font-weight: 400; font-size: .7rem; opacity: .8; }
+      .link-more { font-size: .85rem; font-weight: 700; text-underline-offset: 4px; }
+      .chip {
+        display: inline-block; padding: 2px 10px; border: 1px solid var(--g5); border-radius: 999px;
+        color: var(--g7); font-size: .72rem;
+      }
+
+      .section { padding: 72px 0; border-top: 1px solid var(--g2); }
+      .section-alt { background: var(--g0); }
+      .en { display: block; margin-bottom: 4px; color: var(--g5); font-size: .72rem; font-weight: 700; letter-spacing: .25em; }
+      .h2 { font-size: 1.75rem; line-height: 1.4; }
+      .lead { max-width: 640px; margin-top: 12px; color: var(--g7); font-size: .92rem; }
+      .head { margin-bottom: 36px; }
+      .head-center { text-align: center; }
+      .head-center .lead { margin-inline: auto; }
+      .dummy { color: var(--g7); font-size: .88rem; }
+
+      /* 1 ヘッダー */
+      .site-header {
+        position: sticky; top: var(--bar-h); z-index: 30;
+        border-bottom: 1px solid var(--g3); background: rgba(255,255,255,.96);
+      }
+      .header-inner { display: flex; height: 72px; align-items: center; justify-content: space-between; gap: 24px; }
+      .logo { display: grid; width: 140px; height: 40px; place-items: center; border: 2px dashed var(--g3); font-size: .8rem; font-weight: 700; }
+      .gnav { display: flex; align-items: center; gap: 28px; font-size: .85rem; }
+      .gnav a { text-decoration: none; }
+      .header-actions { display: flex; align-items: center; gap: 16px; }
+      .sns-dot { display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid var(--g5); border-radius: 50%; font-size: .6rem; }
+      .menu-toggle { display: none; width: 44px; height: 44px; padding: 0; border: 1px solid var(--g5); background: var(--white); cursor: pointer; }
+      .menu-toggle i { display: block; width: 20px; height: 2px; margin: 4px auto; background: var(--black); }
+      .sp-drawer { display: none; }
+      .header-anno { padding: 12px 0; }
+      .header-anno .anno { margin-top: 0; }
+
+      /* 2 ファーストビュー */
+      .hero { position: relative; }
+      .hero-visual { min-height: 620px; border: 0; border-bottom: 1px solid var(--g3); place-items: end end; }
+      .hero-visual > span { margin: 0 24px 24px 0; }
+      .hero-copy {
+        position: absolute; top: 50%; left: max(24px, calc((100% - 1080px) / 2));
+        width: min(520px, calc(100% - 48px)); padding: 36px; transform: translateY(-50%);
+        border: 1px solid var(--g3); background: rgba(255,255,255,.95);
+      }
+      .hero-copy h1 { font-size: 2.3rem; line-height: 1.4; }
+      .hero-copy p { margin-top: 14px; color: var(--g7); font-size: .92rem; }
+      .hero-points { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+      .hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 24px; }
+      .hero-anno { padding: 0 0 24px; }
+
+      /* 3 サロンの特徴 */
+      .worry {
+        display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center;
+        margin-bottom: 36px; padding: 20px 24px; border: 1px solid var(--g3); background: var(--white);
+      }
+      .worry-title { font-weight: 700; font-size: .95rem; }
+      .worry ul { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: .85rem; color: var(--g7); }
+      .worry li::before { content: "□ "; }
+      .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+      .feature { border: 1px solid var(--g3); background: var(--white); }
+      .feature-body { padding: 20px; }
+      .num { color: var(--g5); font-size: .75rem; font-weight: 700; letter-spacing: .1em; }
+      .feature h3 { margin: 6px 0 8px; font-size: 1.1rem; }
+
+      /* 4 スタイル実例 */
+      .style-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 40px; }
+      .style-tabs a { min-width: 120px; padding: 8px 20px; border: 1px solid var(--black); font-size: .85rem; font-weight: 700; text-align: center; text-decoration: none; }
+      .style-tabs a:first-child { color: var(--white); background: var(--black); }
+      .style-row + .style-row { margin-top: 48px; }
+      .style-row-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--black); }
+      .style-row-head h3 { font-size: 1.2rem; }
+      .style-row-head h3 small { margin-left: 8px; color: var(--g5); font-size: .72rem; letter-spacing: .15em; }
+      .style-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+      .style-card p { margin-top: 8px; font-size: .85rem; font-weight: 700; }
+      .style-card .meta { display: flex; gap: 6px; margin-top: 6px; }
+
+      /* 5 おすすめメニュー */
+      .menu-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: start; }
+      .menu-main { position: relative; padding: 32px; border: 2px solid var(--black); background: var(--white); }
+      .badge { position: absolute; top: -13px; left: 24px; padding: 2px 12px; color: var(--white); background: var(--black); font-size: .72rem; font-weight: 700; }
+      .menu-main h3 { font-size: 1.4rem; }
+      .price { margin: 12px 0 4px; font-size: 2rem; font-weight: 700; line-height: 1.2; }
+      .price small { font-size: .8rem; font-weight: 400; color: var(--g7); }
+      .menu-time { color: var(--g7); font-size: .85rem; }
+      .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 20px 0 24px; }
+      .flow li { padding: 10px 4px; border: 1px solid var(--g3); background: var(--g0); font-size: .75rem; text-align: center; }
+      .flow li b { display: block; color: var(--g5); font-size: .65rem; }
+      .menu-main .btn { width: 100%; }
+      .menu-table { border-top: 1px solid var(--black); }
+      .menu-table div { display: flex; justify-content: space-between; gap: 16px; padding: 14px 4px; border-bottom: 1px solid var(--g3); font-size: .9rem; }
+      .menu-table dd { font-weight: 700; white-space: nowrap; }
+      .menu-side .link-more { display: inline-block; margin-top: 16px; }
+
+      /* 6 スタッフ */
+      .staff-card { border: 1px solid var(--g3); background: var(--white); }
+      .staff-body { padding: 20px; }
+      .staff-role { color: var(--g5); font-size: .72rem; }
+      .staff-card h3 { font-size: 1.1rem; }
+      .staff-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+      .staff-card .dummy { margin-bottom: 14px; }
+      .staff-card .btn { width: 100%; min-height: 44px; font-size: .82rem; }
+
+      /* 7 店舗情報 */
+      .access-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+      .info div { display: grid; grid-template-columns: 7em 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--g3); font-size: .9rem; }
+      .info dt { font-weight: 700; }
+      .info dd { color: var(--g7); }
+      .access-map .ph { min-height: 340px; }
+      .access-map .link-more { display: inline-block; margin-top: 10px; }
+
+      /* 8 最終予約案内 */
+      .final { background: var(--g1); text-align: center; }
+      .reassure { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 28px 0 32px; }
+      .reassure li { padding: 10px 18px; border: 1px solid var(--g5); background: var(--white); font-size: .85rem; }
+      .reassure li::before { content: "✓ "; font-weight: 700; }
+      .final-note { margin-top: 12px; color: var(--g7); font-size: .78rem; }
+      .final .anno { text-align: left; }
+
+      /* 9 フッター */
+      .site-footer { padding: 48px 0 24px; color: var(--g1); background: var(--g7); }
+      .site-footer .tag { border-color: var(--g3); color: var(--g1); background: transparent; }
+      .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr auto; gap: 32px; align-items: start; }
+      .site-footer .logo { border-color: var(--g5); }
+      .footer-info { margin-top: 14px; font-size: .8rem; line-height: 1.9; }
+      .footer-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; font-size: .82rem; }
+      .footer-nav a { text-decoration: none; }
+      .footer-side { display: grid; gap: 14px; justify-items: end; }
+      .footer-sns { display: flex; gap: 8px; }
+      .footer-sns .sns-dot { border-color: var(--g3); }
+      .site-footer .btn { border-color: var(--white); color: var(--black); background: var(--white); }
+      .copy { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--g5); font-size: .7rem; text-align: center; }
+      .site-footer .anno { color: var(--g1); background: transparent; border-color: var(--g3); }
+      .site-footer .anno::before { color: var(--black); background: var(--g1); }
+
+      /* SP固定予約バー */
+      .sp-bar { display: none; }
+
+      /* ===== SP（フレーム幅 760px 以下） ===== */
+      @container site (max-width: 760px) {
+        .wrap { width: calc(100% - 32px); }
+        .section { padding: 48px 0; }
+        .h2 { font-size: 1.35rem; }
+        .head { margin-bottom: 24px; }
+
+        .header-inner { height: 60px; }
+        .logo { width: 110px; height: 34px; }
+        .gnav, .header-actions .sns-dot, .header-actions .btn { display: none; }
+        .menu-toggle { display: block; }
+        .sp-drawer { border-top: 1px solid var(--g3); background: var(--white); }
+        .sp-drawer.is-open { display: block; }
+        .sp-drawer a { display: block; padding: 14px 16px; border-bottom: 1px solid var(--g2); font-size: .9rem; text-decoration: none; }
+        .sp-drawer .btn { display: flex; margin: 16px; border-bottom: 2px solid var(--black); }
+
+        .hero-visual { min-height: 440px; place-items: start end; }
+        .hero-visual > span { margin: 16px 16px 0 0; }
+        .hero-copy { position: static; width: auto; margin: -64px 16px 0; padding: 24px 20px; transform: none; }
+        .hero-copy h1 { font-size: 1.6rem; }
+        .hero-cta .btn { width: 100%; }
+        .hero-cta { justify-content: center; }
+        .hero-anno { padding-top: 8px; }
+
+        .worry { grid-template-columns: 1fr; gap: 10px; padding: 16px; }
+        .worry ul { flex-direction: column; gap: 4px; }
+        .grid-3 { grid-template-columns: 1fr; gap: 16px; }
+        .feature { display: grid; grid-template-columns: 110px 1fr; }
+        .feature .ph { aspect-ratio: auto; min-height: 100%; border-width: 0 1px 0 0; }
+        .feature-body { padding: 14px; }
+        .feature .dummy { font-size: .8rem; }
+
+        .style-tabs { position: sticky; top: calc(var(--bar-h) + 60px); z-index: 5; justify-content: flex-start; flex-wrap: nowrap; margin: 0 -16px 28px; padding: 10px 16px; background: var(--white); border-bottom: 1px solid var(--g2); }
+        .style-tabs a { flex: 1; min-width: 0; padding: 8px 4px; }
+        .style-list {
+          grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 62%;
+          overflow-x: auto; scroll-snap-type: x mandatory; margin-right: -16px; padding-right: 16px; padding-bottom: 8px;
+        }
+        .style-card { scroll-snap-align: start; }
+
+        .menu-layout { grid-template-columns: 1fr; }
+        .menu-main { padding: 28px 18px 20px; }
+        .price { font-size: 1.7rem; }
+        .flow { grid-template-columns: repeat(2, 1fr); }
+
+        .staff-list { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 78%; overflow-x: auto; scroll-snap-type: x mandatory; margin-right: -16px; padding-right: 16px; padding-bottom: 8px; }
+        .staff-card { scroll-snap-align: start; }
+
+        .access-layout { grid-template-columns: 1fr; gap: 24px; }
+        .info div { grid-template-columns: 5.5em 1fr; gap: 10px; }
+        .access-map .ph { min-height: 220px; }
+
+        .reassure { flex-direction: column; align-items: stretch; }
+        .final .btn-lg { width: 100%; padding-inline: 16px; }
+
+        .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+        .footer-side { justify-items: start; }
+        .site-footer .btn { width: 100%; }
+        .site-footer { padding-bottom: 96px; }
+
+        .sp-bar {
+          position: sticky; bottom: 0; z-index: 40;
+          display: grid; grid-template-columns: 1fr; padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+          border-top: 1px solid var(--g3); background: rgba(255,255,255,.97);
+        }
+        .sp-bar .btn { width: 100%; }
+        .sp-bar-label { position: absolute; top: -26px; left: 8px; padding: 2px 8px; border: 1px dashed var(--anno); color: var(--anno); background: var(--g0); font-size: .65rem; }
+        body.hide-anno .sp-bar-label { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar" role="region" aria-label="ワイヤーフレーム表示切替">
+      <strong>美容院トップ ワイヤーフレーム（plan.md 準拠）</strong>
+      <div class="toolbar-controls">
+        <div class="seg" role="group" aria-label="表示幅">
+          <button type="button" data-view="pc" aria-pressed="true">PC</button>
+          <button type="button" data-view="sp" aria-pressed="false">SP</button>
+        </div>
+        <div class="seg" role="group" aria-label="注釈">
+          <button type="button" data-anno="on" aria-pressed="true">注釈</button>
+          <button type="button" data-anno="off" aria-pressed="false">非表示</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame">
+      <!-- 1 ヘッダー -->
+      <header class="site-header">
+        <div class="wrap header-inner">
+          <a class="logo" href="#top">LOGO</a>
+          <nav class="gnav" aria-label="主要メニュー">
+            <a href="#features">サロンの特徴</a>
+            <a href="#styles">スタイル</a>
+            <a href="#menu">メニュー</a>
+            <a href="#staff">スタッフ</a>
+            <a href="#access">アクセス</a>
+          </nav>
+          <div class="header-actions">
+            <span class="sns-dot" aria-label="Instagram">IG</span>
+            <a class="btn btn-primary" href="#booking">予約する</a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="sp-drawer" aria-label="メニューを開く"><i></i><i></i><i></i></button>
+          </div>
+        </div>
+        <nav class="sp-drawer" id="sp-drawer" aria-label="SPメニュー">
+          <a href="#features">サロンの特徴</a>
+          <a href="#styles">スタイル</a>
+          <a href="#menu">メニュー</a>
+          <a href="#staff">スタッフ</a>
+          <a href="#access">アクセス</a>
+          <a class="btn btn-primary" href="#booking">予約する</a>
+        </nav>
+      </header>
+      <div class="wrap header-anno">
+        <div class="anno">
+          <b>① ヘッダー</b>：スクロールしても上部に固定。「予約する」は黒塗りで一番目立たせ、常に見える位置に置く。SP はハンバーガーメニュー＋画面下に固定の予約バー。
+        </div>
+      </div>
+
+      <main id="top">
+        <!-- 2 ファーストビュー -->
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="ph hero-visual"><span>代表スタイル写真（横長・全幅）<br>カット＋カラーの仕上がりが伝わる1枚</span></div>
+          <div class="hero-copy">
+            <span class="tag">② ファーストビュー</span>
+            <h1 id="hero-title">キャッチコピー<br>（例：似合うを、一緒に見つける。）</h1>
+            <p>サブコピー：似合う髪型・色が分からない方へ。カウンセリングとカット・カラーの技術で、あなたらしいスタイルをご提案します。</p>
+            <ul class="hero-points">
+              <li class="chip">似合わせ提案</li>
+              <li class="chip">再現性の高いカット</li>
+              <li class="chip">肌になじむカラー</li>
+            </ul>
+            <div class="hero-cta">
+              <a class="btn btn-primary btn-lg" href="#booking">予約する<small>（外部予約サイト）</small></a>
+              <a class="link-more" href="#styles">スタイルを見る →</a>
+            </div>
+          </div>
+        </section>
+        <div class="wrap hero-anno">
+          <div class="anno">
+            <b>② ファーストビュー</b>：写真を主役に（MILLOR / hair make ONE 参考）。最初の画面だけで「誰向け」「何が得意か」「どこから予約か」が分かる状態にする。予約ボタンは1つに絞り、スタイルへのリンクは控えめなテキストリンクにする。
+          </div>
+        </div>
+
+        <!-- 3 サロンの特徴 -->
+        <section class="section section-alt" id="features" aria-labelledby="features-title">
+          <div class="wrap">
+            <span class="tag">③ サロンの特徴</span>
+            <div class="head head-center">
+              <span class="en">CONCEPT</span>
+              <h2 class="h2" id="features-title">見出し（例：あなたに似合う、を見つけるサロン）</h2>
+              <p class="lead">リード文：悩みに寄り添い、一緒にスタイルを決めていくサロンであることを2〜3行で説明。</p>
+            </div>
+            <div class="worry">
+              <p class="worry-title">こんなお悩みありませんか？</p>
+              <ul>
+                <li>自分に似合う髪型が分からない</li>
+                <li>どんなカラーにすればいいか迷う</li>
+                <li>家でうまく再現できない</li>
+              </ul>
+            </div>
+            <div class="grid-3">
+              <article class="feature">
+                <div class="ph r-43"><span>カウンセリング風景</span></div>
+                <div class="feature-body">
+                  <p class="num">POINT 01</p>
+                  <h3>似合わせ提案</h3>
+                  <p class="dummy">顔立ち・髪質・ライフスタイルから、似合う髪型と色をご提案。</p>
+                </div>
+              </article>
+              <article class="feature">
+                <div class="ph r-43"><span>カット施術の写真</span></div>
+                <div class="feature-body">
+                  <p class="num">POINT 02</p>
+                  <h3>カット技術</h3>
+                  <p class="dummy">乾かすだけでまとまる、扱いやすさと再現性を重視したカット。</p>
+                </div>
+              </article>
+              <article class="feature">
+                <div class="ph r-43"><span>カラー仕上がりの写真</span></div>
+                <div class="feature-body">
+                  <p class="num">POINT 03</p>
+                  <h3>カラー技術</h3>
+                  <p class="dummy">肌や雰囲気になじむ色味を、ダメージに配慮して表現。</p>
+                </div>
+              </article>
+            </div>
+            <div class="anno">
+              <b>③ サロンの特徴</b>：ターゲットの悩み（似合う髪型・色が分からない）を先に提示 → 3つの強みで解決する流れ。文章は各カード2行程度に抑える。
+            </div>
+          </div>
+        </section>
+
+        <!-- 4 スタイル実例 -->
+        <section class="section" id="styles" aria-labelledby="styles-title">
+          <div class="wrap">
+            <span class="tag">④ スタイル実例</span>
+            <div class="head head-center">
+              <span class="en">STYLE</span>
+              <h2 class="h2" id="styles-title">ヘアスタイル</h2>
+              <p class="lead">長さ別に、実際のカット＋カラーの仕上がりをご覧いただけます。</p>
+            </div>
+            <nav class="style-tabs" aria-label="長さで絞り込み">
+              <a href="#style-long">ロング</a>
+              <a href="#style-semi">セミロング</a>
+              <a href="#style-short">ショート</a>
+            </nav>
+
+            <div class="style-row" id="style-long">
+              <div class="style-row-head">
+                <h3>ロング<small>LONG</small></h3>
+                <a class="link-more" href="#">ロングをもっと見る →</a>
+              </div>
+              <ul class="style-list">
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+              </ul>
+            </div>
+
+            <div class="style-row" id="style-semi">
+              <div class="style-row-head">
+                <h3>セミロング<small>MEDIUM</small></h3>
+                <a class="link-more" href="#">セミロングをもっと見る →</a>
+              </div>
+              <ul class="style-list">
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+              </ul>
+            </div>
+
+            <div class="style-row" id="style-short">
+              <div class="style-row-head">
+                <h3>ショート<small>SHORT</small></h3>
+                <a class="link-more" href="#">ショートをもっと見る →</a>
+              </div>
+              <ul class="style-list">
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+                <li class="style-card"><div class="ph r-34"><span>スタイル写真</span></div><p>スタイル名</p><div class="meta"><span class="chip">カット</span><span class="chip">カラー</span></div></li>
+              </ul>
+            </div>
+
+            <div class="anno">
+              <b>④ スタイル実例</b>：ロング → セミロング → ショートの順。写真は縦長 3:4 で統一し、並べて比較しやすくする（hair make ONE 参考）。
+              <ul>
+                <li>PC：各長さ4枚ずつのグリッド</li>
+                <li>SP：長さ切替タブを上部に固定＋写真は横スワイプ（縦に長くなりすぎない）</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5 おすすめメニュー -->
+        <section class="section section-alt" id="menu" aria-labelledby="menu-title">
+          <div class="wrap">
+            <span class="tag">⑤ おすすめメニュー</span>
+            <div class="head head-center">
+              <span class="en">MENU</span>
+              <h2 class="h2" id="menu-title">おすすめメニュー</h2>
+            </div>
+            <div class="menu-layout">
+              <article class="menu-main">
+                <span class="badge">初めての方におすすめ</span>
+                <h3>カット＋カラー</h3>
+                <p class="price">¥00,000<small>（税込）</small></p>
+                <p class="menu-time">所要時間：約000分</p>
+                <ol class="flow" aria-label="施術の流れ">
+                  <li><b>STEP1</b>カウンセリング</li>
+                  <li><b>STEP2</b>カット</li>
+                  <li><b>STEP3</b>カラー</li>
+                  <li><b>STEP4</b>仕上げ・アドバイス</li>
+                </ol>
+                <a class="btn btn-primary" href="#booking">このメニューで予約する</a>
+              </article>
+              <div class="menu-side">
+                <dl class="menu-table">
+                  <div><dt>カット</dt><dd>¥0,000〜</dd></div>
+                  <div><dt>カラー</dt><dd>¥0,000〜</dd></div>
+                  <div><dt>カット＋カラー＋トリートメント</dt><dd>¥00,000〜</dd></div>
+                  <div><dt>イルミナカラーなど（オプション）</dt><dd>+¥0,000</dd></div>
+                </dl>
+                <a class="link-more" href="#">メニュー・料金一覧を見る →</a>
+              </div>
+            </div>
+            <div class="anno">
+              <b>⑤ おすすめメニュー</b>：カット＋カラーのセットを主役に。「総額」「所要時間」「施術の流れ」が分かるようにして、初めての方の不安を減らす。メニューの中にも予約ボタンを置く。
+            </div>
+          </div>
+        </section>
+
+        <!-- 6 スタッフ紹介 -->
+        <section class="section" id="staff" aria-labelledby="staff-title">
+          <div class="wrap">
+            <span class="tag">⑥ スタッフ紹介</span>
+            <div class="head head-center">
+              <span class="en">STAFF</span>
+              <h2 class="h2" id="staff-title">スタッフ紹介</h2>
+            </div>
+            <ul class="grid-3 staff-list">
+              <li class="staff-card">
+                <div class="ph r-11"><span>顔写真（自然な笑顔）</span></div>
+                <div class="staff-body">
+                  <p class="staff-role">役職（例：オーナースタイリスト）</p>
+                  <h3>スタッフ名</h3>
+                  <div class="staff-tags"><span class="chip">得意：似合わせカット</span><span class="chip">透明感カラー</span></div>
+                  <p class="dummy">人柄が伝わる一言プロフィール（2〜3行）。</p>
+                  <a class="btn" href="#booking">指名して予約する</a>
+                </div>
+              </li>
+              <li class="staff-card">
+                <div class="ph r-11"><span>顔写真（自然な笑顔）</span></div>
+                <div class="staff-body">
+                  <p class="staff-role">役職（例：スタイリスト）</p>
+                  <h3>スタッフ名</h3>
+                  <div class="staff-tags"><span class="chip">得意：ショート</span><span class="chip">ハイライト</span></div>
+                  <p class="dummy">人柄が伝わる一言プロフィール（2〜3行）。</p>
+                  <a class="btn" href="#booking">指名して予約する</a>
+                </div>
+              </li>
+              <li class="staff-card">
+                <div class="ph r-11"><span>顔写真（自然な笑顔）</span></div>
+                <div class="staff-body">
+                  <p class="staff-role">役職（例：カラーリスト）</p>
+                  <h3>スタッフ名</h3>
+                  <div class="staff-tags"><span class="chip">得意：ダメージレスカラー</span></div>
+                  <p class="dummy">人柄が伝わる一言プロフィール（2〜3行）。</p>
+                  <a class="btn" href="#booking">指名して予約する</a>
+                </div>
+              </li>
+            </ul>
+            <div class="anno">
+              <b>⑥ スタッフ紹介</b>：顔写真・得意な施術・短いプロフィールで「親しみやすさ」を伝える。指名予約ボタンは白抜き（メインの予約ボタンより控えめ）。SP は横スワイプ。
+            </div>
+          </div>
+        </section>
+
+        <!-- 7 店舗情報・アクセス -->
+        <section class="section section-alt" id="access" aria-labelledby="access-title">
+          <div class="wrap">
+            <span class="tag">⑦ 店舗情報・アクセス</span>
+            <div class="head">
+              <span class="en">ACCESS</span>
+              <h2 class="h2" id="access-title">店舗情報・アクセス</h2>
+            </div>
+            <div class="access-layout">
+              <div>
+                <div class="ph r-43" style="margin-bottom:20px"><span>外観・店内写真</span></div>
+                <dl class="info">
+                  <div><dt>店舗名</dt><dd>サロン名</dd></div>
+                  <div><dt>住所</dt><dd>〒000-0000 ○○県○○市○○ 0-0-0 ○○ビル 1F</dd></div>
+                  <div><dt>最寄り駅</dt><dd>○○線「○○駅」○口より徒歩0分</dd></div>
+                  <div><dt>営業時間</dt><dd>平日 00:00〜00:00 ／ 土日祝 00:00〜00:00</dd></div>
+                  <div><dt>定休日</dt><dd>毎週○曜日</dd></div>
+                  <div><dt>電話番号</dt><dd>00-0000-0000</dd></div>
+                </dl>
+              </div>
+              <div class="access-map">
+                <div class="ph"><span>Googleマップ埋め込み</span></div>
+                <a class="link-more" href="#">Googleマップで開く →</a>
+              </div>
+            </div>
+            <div class="anno">
+              <b>⑦ 店舗情報・アクセス</b>：沿線・近隣の方が「通えるか」をすぐ判断できるよう、最寄り駅と徒歩分数を目立たせる。SP では電話番号をタップで発信できるようにする。
+            </div>
+          </div>
+        </section>
+
+        <!-- 8 最終予約案内 -->
+        <section class="section final" id="booking" aria-labelledby="booking-title">
+          <div class="wrap">
+            <span class="tag">⑧ 最終予約案内</span>
+            <span class="en">RESERVATION</span>
+            <h2 class="h2" id="booking-title">見出し（例：まずはお気軽にご相談ください）</h2>
+            <p class="lead" style="margin-inline:auto">髪型やカラーが決まっていなくても大丈夫。カウンセリングで一緒に決めていきます。</p>
+            <ul class="reassure">
+              <li>なりたい髪型が決まっていなくてもOK</li>
+              <li>料金は施術前にご案内</li>
+              <li>24時間Web予約OK</li>
+            </ul>
+            <a class="btn btn-primary btn-lg" href="#">予約する<small>（外部予約サイトへ）</small></a>
+            <p class="final-note">※ 外部予約サイト（例：ホットペッパービューティー）に移動します</p>
+            <div class="anno">
+              <b>⑧ 最終予約案内</b>：ページ最後の「背中を押す」場所。不安を解消する短い一言＋チェック項目3つ＋大きな予約ボタン。外部サイトへ移動することを事前に伝え、離脱を防ぐ。
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- 9 フッター -->
+      <footer class="site-footer">
+        <div class="wrap">
+          <span class="tag">⑨ フッター</span>
+          <div class="footer-grid">
+            <div>
+              <span class="logo">LOGO</span>
+              <p class="footer-info">〒000-0000 ○○県○○市○○ 0-0-0<br>○○駅 徒歩0分 ／ 営業時間 00:00〜00:00 ／ 定休日 ○曜日<br>TEL 00-0000-0000</p>
+            </div>
+            <nav class="footer-nav" aria-label="フッターメニュー">
+              <a href="#features">サロンの特徴</a>
+              <a href="#styles">スタイル</a>
+              <a href="#menu">メニュー</a>
+              <a href="#staff">スタッフ</a>
+              <a href="#access">アクセス</a>
+              <a href="#booking">ご予約</a>
+            </nav>
+            <div class="footer-side">
+              <div class="footer-sns"><span class="sns-dot">IG</span><span class="sns-dot">LINE</span></div>
+              <a class="btn" href="#booking">予約する</a>
+            </div>
+          </div>
+          <div class="anno">
+            <b>⑨ フッター</b>：店舗情報・SNS・予約ボタン。Instagram はスタイル写真の補完として活用。
+          </div>
+          <p class="copy">© SALON NAME All Rights Reserved.</p>
+        </div>
+      </footer>
+
+      <!-- SP固定予約バー -->
+      <div class="sp-bar">
+        <span class="sp-bar-label">SPのみ：画面下に常時固定</span>
+        <a class="btn btn-primary" href="#booking">予約する（外部予約サイト）</a>
+      </div>
+    </div>
+
+    <script>
+      const body = document.body;
+      document.querySelectorAll("[data-view]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          body.classList.toggle("is-sp", btn.dataset.view === "sp");
+          document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-pressed", b === btn));
+        });
+      });
+      document.querySelectorAll("[data-anno]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          body.classList.toggle("hide-anno", btn.dataset.anno === "off");
+          document.querySelectorAll("[data-anno]").forEach((b) => b.setAttribute("aria-pressed", b === btn));
+        });
+      });
+      const toggle = document.querySelector(".menu-toggle");
+      const drawer = document.getElementById("sp-drawer");
+      toggle.addEventListener("click", () => {
+        const open = drawer.classList.toggle("is-open");
+        toggle.setAttribute("aria-expanded", open);
+        toggle.setAttribute("aria-label", open ? "メニューを閉じる" : "メニューを開く");
+      });
+      drawer.addEventListener("click", (e) => {
+        if (e.target.closest("a")) {
+          drawer.classList.remove("is-open");
+          toggle.setAttribute("aria-expanded", "false");
+        }
+      });
+    </script>
+  </body>
+</html>
