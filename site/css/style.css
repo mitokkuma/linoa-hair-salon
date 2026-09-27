@@ -14,6 +14,8 @@
   --serif: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
   --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", Meiryo, sans-serif;
   --latin: Georgia, "Times New Roman", serif;
+  /* 数字用：細めのゴシック（旧来の上下に揺れる数字にならないフォント） */
+  --num: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --page: min(1120px, calc(100% - 64px));
   --header-h: 82px;
 }
@@ -295,7 +297,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .feature-card img { aspect-ratio: 3 / 2; object-fit: cover; }
 .num {
   color: var(--taupe);
-  font-family: var(--latin);
+  font-family: var(--num);
   font-size: .72rem;
   letter-spacing: .16em;
 }
@@ -380,7 +382,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
   font-size: .68rem;
 }
 .menu-main h3 { font-family: var(--serif); font-size: 1.75rem; font-weight: 500; }
-.price { margin-top: 14px; font-family: var(--latin); font-size: 2.4rem; line-height: 1.4; }
+.price {
+  margin-top: 14px;
+  font-family: var(--num);
+  font-size: 2.4rem;
+  font-weight: 300;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: .02em;
+  line-height: 1.4;
+}
 .price small { font-family: var(--sans); font-size: .75rem; color: var(--sub); }
 .time { color: var(--sub); font-size: .82rem; }
 .flow {
@@ -407,7 +417,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
   border-bottom: 1px solid var(--line);
   font-size: .83rem;
 }
-.price-list dd { font-family: var(--latin); font-weight: 700; white-space: nowrap; }
+.price-list dd {
+  font-family: var(--num);
+  font-size: .9rem;
+  font-weight: 400;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: .03em;
+  white-space: nowrap;
+}
 .menu-note { margin-top: 12px; color: var(--sub); font-size: .7rem; }
 .menu-side .text-link { display: inline-block; margin-top: 14px; }
 
